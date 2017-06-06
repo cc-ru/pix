@@ -23,6 +23,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
+    compile 'no.tornado:tornadofx:1.7.5'
 }
 
 sourceCompatibility = 1.8
