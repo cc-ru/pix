@@ -1,22 +1,23 @@
 package totoro.pix
 
 import javafx.scene.paint.Color
+import java.util.*
 
 class Sequence(val fore: Color, val back: Color, val x: Int, val y: Int) {
-    var str = "▀"
+    var str = LinkedList<Int>().plus(Block.UPPER)
 
     fun add(upper: Color, lower: Color): Boolean {
         if (fits(upper, lower)) {
-            str += when (upper) {
+            str.plus(when (upper) {
                 fore -> when (lower) {
-                    fore -> "█"
-                    else -> "▀"
+                    fore -> Block.FULL
+                    else -> Block.UPPER
                 }
                 else -> when (lower) {
-                    fore -> "▄"
-                    else -> " "
+                    fore -> Block.LOWER
+                    else -> Block.EMPTY
                 }
-            }
+            })
             return true
         } else return false
     }

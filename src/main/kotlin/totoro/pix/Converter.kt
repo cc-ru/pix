@@ -50,6 +50,34 @@ object Converter {
             if (sorted[seq.fore]?.get(seq.back) == null) sorted[seq.fore]?.set(seq.back, LinkedList<Sequence>())
             sorted[seq.fore]?.get(seq.back)?.add(seq)
         }
+        print("Compressed char sequence: ")
+        val raw = ArrayList<Byte>()
+        var index = 0
+        var byte = 0
+        sorted.forEach { _, sub ->
+            sub.forEach { _, list ->
+                list.forEach { seq ->
+                    seq.str.forEach { char ->
+                        if (index % 4 == 0 && index > 0) {
+                            raw.add(byte.toByte())
+                            print("$byte.")
+                            byte = 0
+                        }
+                        byte = byte * 4 + char
+                        index++
+                    }
+                }
+            }
+        }
+        if (index % 4 != 0) {
+            while (index % 4 != 0) { byte *= 4; index++ }
+            raw.add(byte.toByte())
+            print("$byte.")
+        }
+        println()
+        encodeLen(matrix, index)
+        raw.forEach { matrix.add(it) }
+        println("Total: $index symbols / ${raw.size} bytes\n")
         encodeLen(matrix, sorted.size)
         println("Fore colors: ${sorted.size}")
         sorted.forEach { fore, sub ->
@@ -67,10 +95,8 @@ object Converter {
                     println("- - - x: ${seq.x}")
                     matrix.add(seq.y.toByte())
                     println("- - - y: ${seq.y}")
-                    matrix.add(seq.str.length.toByte())
-                    println("- - - len: ${seq.str.length}")
-                    seq.str.forEach { char -> matrix.add(char.toByte()) }
-                    println("- - - str: ${seq.str}")
+                    matrix.add(seq.str.size.toByte())
+                    println("- - - len: ${seq.str.size}")
                     println("- - - * * *")
                 }
             }
