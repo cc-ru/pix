@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.paint.Color
 import javafx.stage.FileChooser
 import tornadofx.*
+import java.nio.file.Files
 
 
 class PixView: View() {
@@ -39,10 +40,16 @@ class PixView: View() {
             }
             button("Export To...") {
                 action {
-                    runAsync {
-                        Converter.convert(image.value)
-                    } ui { result ->
-                        alert(Alert.AlertType.CONFIRMATION, "Converted successfully", result.joinToString("."))
+                    val files = chooseFile("Select file to save",
+                            arrayOf(FileChooser.ExtensionFilter("Pix Image",
+                                    listOf("*.pix"))), FileChooserMode.Save)
+                    if (files.isNotEmpty()) {
+                        runAsync {
+                            val result = Converter.convert(image.value)
+                            Files.write(files.first().toPath(), result)
+                        } ui {
+                            alert(Alert.AlertType.CONFIRMATION, "Converted successfully")
+                        }
                     }
                 }
             }

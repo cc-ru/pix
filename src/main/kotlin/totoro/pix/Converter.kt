@@ -6,15 +6,15 @@ import java.util.*
 import kotlin.collections.HashMap
 
 object Converter {
-    fun convert(image: Image): ShortArray {
-        val matrix = ArrayList<Short>()
+    fun convert(image: Image): ByteArray {
+        val matrix = ArrayList<Byte>()
         val reader = image.pixelReader
 
         // encode width / height
         val width = Math.min(image.width.toInt(), 160)
         val height = Math.min(image.height.toInt(), 100)
-        matrix.add(width.toShort())
-        matrix.add((height / 2).toShort())
+        matrix.add(width.toByte())
+        matrix.add((height / 2).toByte())
 
         // encode basic fore / back colors
         val pairs = HashMap<Pair<Color, Color>, Int>()
@@ -54,24 +54,24 @@ object Converter {
                 encodeColor(matrix, back)
                 encodeLen(matrix, list.size)
                 list.forEach { seq ->
-                    matrix.add(seq.x.toShort())
-                    matrix.add(seq.y.toShort())
-                    matrix.add(seq.str.length.toShort())
-                    seq.str.forEach { char -> matrix.add(char.toShort()) }
+                    matrix.add(seq.x.toByte())
+                    matrix.add(seq.y.toByte())
+                    matrix.add(seq.str.length.toByte())
+                    seq.str.forEach { char -> matrix.add(char.toByte()) }
                 }
             }
         }
 
-        return ShortArray(matrix.size, { matrix[it] })
+        return ByteArray(matrix.size, { matrix[it] })
     }
 
-    private fun encodeColor(matrix: ArrayList<Short>, color: Color) {
-        matrix.add(color.red.toShort())
-        matrix.add(color.green.toShort())
-        matrix.add(color.blue.toShort())
+    private fun encodeColor(matrix: ArrayList<Byte>, color: Color) {
+        matrix.add(color.red.toByte())
+        matrix.add(color.green.toByte())
+        matrix.add(color.blue.toByte())
     }
-    private fun encodeLen(matrix: ArrayList<Short>, len : Int) {
-        matrix.add((len / 256).toShort())
-        matrix.add((len % 256).toShort())
+    private fun encodeLen(matrix: ArrayList<Byte>, len : Int) {
+        matrix.add((len / 256).toByte())
+        matrix.add((len % 256).toByte())
     }
 }
