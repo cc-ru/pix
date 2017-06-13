@@ -80,9 +80,9 @@ object Converter {
     }
 
     private fun encodeColor(matrix: ArrayList<Byte>, color: Color) {
-        matrix.add(color.red.toByte())
-        matrix.add(color.green.toByte())
-        matrix.add(color.blue.toByte())
+        matrix.add((color.red * 256).toByte())
+        matrix.add((color.green * 256).toByte())
+        matrix.add((color.blue * 256).toByte())
     }
     private fun encodeLen(matrix: ArrayList<Byte>, len : Int) {
         matrix.add((len / 256).toByte())
