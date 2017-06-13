@@ -3,7 +3,7 @@ package totoro.pix
 import javafx.scene.paint.Color
 
 class Sequence(val fore: Color, val back: Color, val x: Int, val y: Int) {
-    var str = ""
+    var str = "▀"
 
     fun add(upper: Color, lower: Color): Boolean {
         if (fits(upper, lower)) {

@@ -28,8 +28,8 @@ object Converter {
         val basic = pairs.toSortedMap(compareBy<Pair<Color, Color>> { pairs[it] }.reversed()).firstKey()
         encodeColor(matrix, basic.first)
         encodeColor(matrix, basic.second)
-        println("Basic fore: ${basic.first.red}, ${basic.first.green}, ${basic.first.blue}")
-        println("Basic back: ${basic.second.red}, ${basic.second.green}, ${basic.second.blue}\n")
+        println("Basic fore: ${basic.first.red * 256}, ${basic.first.green * 256}, ${basic.first.blue * 256}")
+        println("Basic back: ${basic.second.red * 256}, ${basic.second.green * 256}, ${basic.second.blue * 256}\n")
 
         // encode the rest of matrix
         val list = LinkedList<Sequence>()
@@ -54,12 +54,12 @@ object Converter {
         println("Fore colors: ${sorted.size}")
         sorted.forEach { fore, sub ->
             encodeColor(matrix, fore)
-            println("- ${fore.red}, ${fore.green}, ${fore.blue}")
+            println("- ${fore.red * 256}, ${fore.green * 256}, ${fore.blue * 256}")
             encodeLen(matrix, sub.size)
             println("- Back colors: ${sub.size}")
             sub.forEach { back, list ->
                 encodeColor(matrix, back)
-                println("- - ${back.red}, ${back.green}, ${back.blue}")
+                println("- - ${back.red * 256}, ${back.green * 256}, ${back.blue * 256}")
                 encodeLen(matrix, list.size)
                 println("- - Sequences: ${list.size}")
                 list.forEach { seq ->
