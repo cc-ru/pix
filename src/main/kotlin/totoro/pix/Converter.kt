@@ -28,8 +28,8 @@ object Converter {
         val basic = pairs.toSortedMap(compareBy<Pair<Color, Color>> { pairs[it] }.reversed()).firstKey()
         encodeColor(matrix, basic.first)
         encodeColor(matrix, basic.second)
-        println("Basic fore: ${basic.first.red * 256}, ${basic.first.green * 256}, ${basic.first.blue * 256}")
-        println("Basic back: ${basic.second.red * 256}, ${basic.second.green * 256}, ${basic.second.blue * 256}\n")
+        println("Basic fore: ${basic.first.red * 255}, ${basic.first.green * 255}, ${basic.first.blue * 255}")
+        println("Basic back: ${basic.second.red * 255}, ${basic.second.green * 255}, ${basic.second.blue * 255}\n")
 
         // encode the rest of matrix
         val list = LinkedList<Sequence>()
@@ -82,12 +82,12 @@ object Converter {
         println("Fore colors: ${sorted.size}")
         sorted.forEach { fore, sub ->
             encodeColor(matrix, fore)
-            println("- ${fore.red * 256}, ${fore.green * 256}, ${fore.blue * 256}")
+            println("- ${fore.red * 255}, ${fore.green * 255}, ${fore.blue * 255}")
             encodeLen(matrix, sub.size)
             println("- Back colors: ${sub.size}")
             sub.forEach { back, list ->
                 encodeColor(matrix, back)
-                println("- - ${back.red * 256}, ${back.green * 256}, ${back.blue * 256}")
+                println("- - ${back.red * 255}, ${back.green * 255}, ${back.blue * 255}")
                 encodeLen(matrix, list.size)
                 println("- - Sequences: ${list.size}")
                 list.forEach { seq ->
@@ -106,9 +106,9 @@ object Converter {
     }
 
     private fun encodeColor(matrix: ArrayList<Byte>, color: Color) {
-        matrix.add((color.red * 256).toByte())
-        matrix.add((color.green * 256).toByte())
-        matrix.add((color.blue * 256).toByte())
+        matrix.add((color.red * 255).toByte())
+        matrix.add((color.green * 255).toByte())
+        matrix.add((color.blue * 255).toByte())
     }
     private fun encodeLen(matrix: ArrayList<Byte>, len : Int) {
         matrix.add((len / 256).toByte())
