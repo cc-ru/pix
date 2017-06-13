@@ -15,6 +15,8 @@ object Converter {
         val height = Math.min(image.height.toInt(), 100)
         matrix.add(width.toByte())
         matrix.add((height / 2).toByte())
+        println("Width: $width")
+        println("Height: $height\n")
 
         // encode basic fore / back colors
         val pairs = HashMap<Pair<Color, Color>, Int>()
@@ -26,6 +28,8 @@ object Converter {
         val basic = pairs.toSortedMap(compareBy<Pair<Color, Color>> { pairs[it] }.reversed()).firstKey()
         encodeColor(matrix, basic.first)
         encodeColor(matrix, basic.second)
+        println("Basic fore: ${basic.first.red}, ${basic.first.green}, ${basic.first.blue}")
+        println("Basic back: ${basic.second.red}, ${basic.second.green}, ${basic.second.blue}\n")
 
         // encode the rest of matrix
         val list = LinkedList<Sequence>()
@@ -47,17 +51,27 @@ object Converter {
             sorted[seq.fore]?.get(seq.back)?.add(seq)
         }
         encodeLen(matrix, sorted.size)
+        println("Fore colors: ${sorted.size}")
         sorted.forEach { fore, sub ->
             encodeColor(matrix, fore)
+            println("- ${fore.red}, ${fore.green}, ${fore.blue}")
             encodeLen(matrix, sub.size)
+            println("- Back colors: ${sub.size}")
             sub.forEach { back, list ->
                 encodeColor(matrix, back)
+                println("- - ${back.red}, ${back.green}, ${back.blue}")
                 encodeLen(matrix, list.size)
+                println("- - Sequences: ${list.size}")
                 list.forEach { seq ->
                     matrix.add(seq.x.toByte())
+                    println("- - - x: ${seq.x}")
                     matrix.add(seq.y.toByte())
+                    println("- - - y: ${seq.y}")
                     matrix.add(seq.str.length.toByte())
+                    println("- - - len: ${seq.str.length}")
                     seq.str.forEach { char -> matrix.add(char.toByte()) }
+                    println("- - - str: ${seq.str}")
+                    println("- - - * * *")
                 }
             }
         }
