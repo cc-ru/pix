@@ -34,11 +34,12 @@ object Converter {
         // encode the rest of matrix
         val list = LinkedList<Sequence>()
         var current: Sequence? = null
-        for (x in 0 until width) {
-            for (y in 0 until height / 2) {
+        for (y in 0 until height / 2) {
+            for (x in 0 until width) {
                 val upper = inflate(deflate(reader.getColor(x, y*2)))
                 val lower = inflate(deflate(reader.getColor(x, y*2+1)))
-                if (current == null || current.str.size >= 255 || !current.add(upper, lower)) {
+                if (current == null || current.str.size >= 255 ||
+                        x == 0 || !current.add(upper, lower)) {
                     if (current != null) list.add(current)
                     current = Sequence(upper, lower, x+1, y+1)
                 }
