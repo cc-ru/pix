@@ -38,7 +38,7 @@ object Converter {
             for (y in 0 until height / 2) {
                 val upper = inflate(deflate(reader.getColor(x, y*2)))
                 val lower = inflate(deflate(reader.getColor(x, y*2+1)))
-                if (current == null || !current.add(upper, lower)) {
+                if (current == null || current.str.size >= 255 || !current.add(upper, lower)) {
                     if (current != null) list.add(current)
                     current = Sequence(upper, lower, x+1, y+1)
                 }
