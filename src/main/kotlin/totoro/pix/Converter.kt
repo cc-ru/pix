@@ -21,8 +21,8 @@ object Converter {
         // encode basic fore / back colors
         val pairs = HashMap<Pair<Color, Color>, Int>()
         for (x in 0 until width) {
-            (0 until height / 2 step 2)
-                    .map { Pair(reader.getColor(x, it), reader.getColor(x, it+1)) }
+            (0 until height / 2)
+                    .map { Pair(reader.getColor(x, it*2), reader.getColor(x, it*2+1)) }
                     .forEach { pairs[it] = pairs[it]?.plus(1) ?: 1 }
         }
         val basic = pairs.toSortedMap(compareBy<Pair<Color, Color>> { pairs[it] }.reversed()).firstKey()
