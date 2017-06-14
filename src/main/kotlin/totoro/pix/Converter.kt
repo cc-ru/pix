@@ -36,8 +36,8 @@ object Converter {
         var current: Sequence? = null
         for (x in 0 until width) {
             for (y in 0 until height / 2) {
-                val upper = deflate(reader.getColor(x, y*2))
-                val lower = deflate(reader.getColor(x, y*2+1))
+                val upper = inflate(deflate(reader.getColor(x, y*2)))
+                val lower = inflate(deflate(reader.getColor(x, y*2+1)))
                 if (current == null || !current.add(upper, lower)) {
                     if (current != null) list.add(current)
                     current = Sequence(upper, lower, x+1, y+1)
@@ -118,10 +118,20 @@ object Converter {
     private val reds = 6
     private val greens = 8
     private val blues = 5
-    private fun deflate(color: Color): Color {
+    fun deflate(color: Color): Int {
         val idxR = (color.red * 255 * (reds - 1.0) / 0xFF + 0.5).toInt()
         val idxG = (color.green * 255 * (greens - 1.0) / 0xFF + 0.5).toInt()
         val idxB = (color.blue * 255 * (blues - 1.0) / 0xFF + 0.5).toInt()
-        return Color.rgb(idxR, idxG, idxB)
+        return 16 + idxR * greens * blues + idxG * blues + idxB
+    }
+    fun inflate(value: Int): Color {
+        val index = value - 16
+        val idxB = index % blues
+        val idxG = (index / blues) % greens
+        val idxR = (index / blues / greens) % reds
+        val r = (idxR * 0xFF / (reds - 1.0) + 0.5).toInt()
+        val g = (idxG * 0xFF / (greens - 1.0) + 0.5).toInt()
+        val b = (idxB * 0xFF / (blues - 1.0) + 0.5).toInt()
+        return Color.rgb(r, g, b)
     }
 }
