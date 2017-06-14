@@ -27,7 +27,7 @@ dependencies {
 }
 
 sourceCompatibility = 1.8
-version = '0.6.1'
+version = '0.6.2'
 jar {
     manifest {
         attributes 'Implementation-Title': 'pix',
