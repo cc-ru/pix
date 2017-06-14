@@ -35,9 +35,9 @@ object Converter {
         val list = LinkedList<Sequence>()
         var current: Sequence? = null
         for (x in 0 until width) {
-            for (y in 0 until height / 2 step 1) {
-                val upper = reader.getColor(x, y*2)
-                val lower = reader.getColor(x, y*2+1)
+            for (y in 0 until height / 2) {
+                val upper = deflate(reader.getColor(x, y*2))
+                val lower = deflate(reader.getColor(x, y*2+1))
                 if (current == null || !current.add(upper, lower)) {
                     if (current != null) list.add(current)
                     current = Sequence(upper, lower, x+1, y+1)
@@ -113,5 +113,15 @@ object Converter {
     private fun encodeLen(matrix: ArrayList<Byte>, len : Int) {
         matrix.add((len / 256).toByte())
         matrix.add((len % 256).toByte())
+    }
+
+    private val reds = 6
+    private val greens = 8
+    private val blues = 5
+    private fun deflate(color: Color): Color {
+        val idxR = (color.red * 255 * (reds - 1.0) / 0xFF + 0.5).toInt()
+        val idxG = (color.green * 255 * (greens - 1.0) / 0xFF + 0.5).toInt()
+        val idxB = (color.blue * 255 * (blues - 1.0) / 0xFF + 0.5).toInt()
+        return Color.rgb(idxR, idxG, idxB)
     }
 }
