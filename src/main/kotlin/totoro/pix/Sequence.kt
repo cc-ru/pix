@@ -8,7 +8,7 @@ class Sequence(val fore: Color, val back: Color, val x: Int, val y: Int) {
 
     fun add(upper: Color, lower: Color): Boolean {
         if (fits(upper, lower)) {
-            str.plus(when (upper) {
+            str = str.plus(when (upper) {
                 fore -> when (lower) {
                     fore -> Block.FULL
                     else -> Block.UPPER
@@ -23,6 +23,4 @@ class Sequence(val fore: Color, val back: Color, val x: Int, val y: Int) {
     }
 
     fun fits(a: Color, b: Color): Boolean = (fore == a && back == b) || (fore == b && back == a)
-
-    fun empty() = Sequence(Color.BLACK, Color.BLACK, 1, 1)
 }
