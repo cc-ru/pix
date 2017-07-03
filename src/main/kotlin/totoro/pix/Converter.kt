@@ -119,20 +119,35 @@ object Converter {
     private val reds = 6
     private val greens = 8
     private val blues = 5
+    private val grays = arrayOf (
+            0.05859375, 0.1171875, 0.17578125, 0.234375, 0.29296875, 0.3515625, 0.41015625, 0.46875,
+            0.52734375, 0.5859375, 0.64453125, 0.703125, 0.76171875, 0.8203125, 0.87890625, 0.9375
+    )
+    private fun delta(a: Color, b: Color): Double {
+        val dr = a.red - b.red
+        val dg = a.green - b.green
+        val db = a.blue - b.blue
+        return 0.2126 * dr * dr + 0.7152 * dg * dg + 0.0722 * db * db
+    }
     fun deflate(color: Color): Int {
         val idxR = (color.red * 255 * (reds - 1.0) / 0xFF + 0.5).toInt()
         val idxG = (color.green * 255 * (greens - 1.0) / 0xFF + 0.5).toInt()
         val idxB = (color.blue * 255 * (blues - 1.0) / 0xFF + 0.5).toInt()
-        return 16 + idxR * greens * blues + idxG * blues + idxB
+        val compressed = 16 + idxR * greens * blues + idxG * blues + idxB
+        return (0..15).fold(compressed, { acc, i -> if (delta(inflate(i), color) < delta(inflate(acc), color)) i else acc })
     }
     fun inflate(value: Int): Color {
-        val index = value - 16
-        val idxB = index % blues
-        val idxG = (index / blues) % greens
-        val idxR = (index / blues / greens) % reds
-        val r = (idxR * 0xFF / (reds - 1.0) + 0.5).toInt()
-        val g = (idxG * 0xFF / (greens - 1.0) + 0.5).toInt()
-        val b = (idxB * 0xFF / (blues - 1.0) + 0.5).toInt()
-        return Color.rgb(r, g, b)
+        if (value < 16) {
+            return Color.gray(grays[value])
+        } else {
+            val index = value - 16
+            val idxB = index % blues
+            val idxG = (index / blues) % greens
+            val idxR = (index / blues / greens) % reds
+            val r = (idxR * 0xFF / (reds - 1.0) + 0.5).toInt()
+            val g = (idxG * 0xFF / (greens - 1.0) + 0.5).toInt()
+            val b = (idxB * 0xFF / (blues - 1.0) + 0.5).toInt()
+            return Color.rgb(r, g, b)
+        }
     }
 }
