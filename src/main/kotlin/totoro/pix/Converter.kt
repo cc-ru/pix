@@ -76,12 +76,14 @@ object Converter {
         if (index % 4 != 0) {
             while (index % 4 != 0) { byte *= 4; index++ }
             raw.add(byte.toByte())
-            print("$byte.")
         }
-        println()
+        raw.add(byte.toByte())
+        print("$byte.\n")
+
         encodeLen(matrix, index)
         raw.forEach { matrix.add(it) }
         println("Total: $index symbols / ${raw.size} bytes\n")
+
         encodeLen(matrix, sorted.size)
         println("Fore colors: ${sorted.size}")
         sorted.forEach { fore, sub ->
