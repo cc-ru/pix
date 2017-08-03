@@ -45,12 +45,15 @@ object Converter {
                 }
             }
         }
+        if (current != null) list.add(current)
+
         val sorted = HashMap<Color, HashMap<Color, LinkedList<Sequence>>>()
         for (seq in list) {
             if (sorted[seq.fore] == null) sorted[seq.fore] = HashMap<Color, LinkedList<Sequence>>()
             if (sorted[seq.fore]?.get(seq.back) == null) sorted[seq.fore]?.set(seq.back, LinkedList<Sequence>())
             sorted[seq.fore]?.get(seq.back)?.add(seq)
         }
+
         print("Compressed char sequence: ")
         val raw = ArrayList<Byte>()
         var index = 0
