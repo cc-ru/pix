@@ -29,7 +29,7 @@ class PixView: View() {
             }
             button("Open Image...") {
                 action {
-                    val result = chooseFile("Select image file",
+                    val result = FilePicker.chooseFile("Select image file",
                             arrayOf(FileChooser.ExtensionFilter("Supported image format",
                                     listOf("*.png", "*.jpg", "*.jpeg", "*.bmp"))))
                     if (result.isNotEmpty()) {
@@ -40,7 +40,7 @@ class PixView: View() {
             }
             button("Export To...") {
                 action {
-                    val files = chooseFile("Select file to save",
+                    val files = FilePicker.chooseFile("Select file to save",
                             arrayOf(FileChooser.ExtensionFilter("Pix Image",
                                     listOf("*.pix"))), FileChooserMode.Save)
                     if (files.isNotEmpty()) {
