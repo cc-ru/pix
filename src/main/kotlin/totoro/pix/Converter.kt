@@ -56,8 +56,8 @@ object Converter {
         var index = 0
         var byte = 0
         sorted.forEach { _, sub ->
-            sub.forEach { _, list ->
-                list.forEach { seq ->
+            sub.forEach { _, l ->
+                l.forEach { seq ->
                     seq.str.forEach { char ->
                         if (index % 4 == 0 && index > 0) {
                             raw.add(byte.toByte())
@@ -86,12 +86,12 @@ object Converter {
             println("- ${fore.red * 255}, ${fore.green * 255}, ${fore.blue * 255}")
             encodeLen(matrix, sub.size)
             println("- Back colors: ${sub.size}")
-            sub.forEach { back, list ->
+            sub.forEach { back, l ->
                 encodeColor(matrix, back)
                 println("- - ${back.red * 255}, ${back.green * 255}, ${back.blue * 255}")
-                encodeLen(matrix, list.size)
-                println("- - Sequences: ${list.size}")
-                list.forEach { seq ->
+                encodeLen(matrix, l.size)
+                println("- - Sequences: ${l.size}")
+                l.forEach { seq ->
                     matrix.add(seq.x.toByte())
                     println("- - - x: ${seq.x}")
                     matrix.add(seq.y.toByte())
