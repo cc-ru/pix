@@ -1,4 +1,4 @@
-package totoro.pix
+package totoro.pix.converter
 
 import javafx.scene.paint.Color
 import java.util.*
@@ -22,5 +22,5 @@ class Sequence(val fore: Color, val back: Color, val x: Int, val y: Int) {
         } else return false
     }
 
-    fun fits(a: Color, b: Color): Boolean = (fore == a && back == b) || (fore == b && back == a)
+    private fun fits(a: Color, b: Color): Boolean = (fore == a && back == b) || (fore == b && back == a)
 }

@@ -1,4 +1,4 @@
-package totoro.pix
+package totoro.pix.converter
 
 import javafx.scene.image.Image
 import javafx.scene.paint.Color
@@ -36,12 +36,12 @@ object Converter {
         var current: Sequence? = null
         for (y in 0 until height / 2) {
             for (x in 0 until width) {
-                val upper = inflate(deflate(reader.getColor(x, y*2)))
-                val lower = inflate(deflate(reader.getColor(x, y*2+1)))
+                val upper = inflate(deflate(reader.getColor(x, y * 2)))
+                val lower = inflate(deflate(reader.getColor(x, y * 2 + 1)))
                 if (current == null || current.str.size >= 255 ||
                         x == 0 || !current.add(upper, lower)) {
                     if (current != null) list.add(current)
-                    current = Sequence(upper, lower, x+1, y+1)
+                    current = Sequence(upper, lower, x + 1, y + 1)
                 }
             }
         }

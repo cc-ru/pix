@@ -1,11 +1,11 @@
-package totoro.pix
+package totoro.pix.ui
 
 import javafx.stage.FileChooser
 import javafx.stage.Window
 import tornadofx.FileChooserMode
 import java.io.File
 
-object FilePicker {
+class FilePicker {
     private val chooser = FileChooser()
     private var directory: File? = null
 

@@ -1,4 +1,4 @@
-package totoro.pix
+package totoro.pix.ui
 
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
@@ -9,10 +9,14 @@ import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.paint.Color
 import javafx.stage.FileChooser
 import tornadofx.*
+import totoro.pix.converter.Converter
 import java.nio.file.Files
 
 
 class PixView: View() {
+    private val openFilePicker = FilePicker()
+    private val exportFilePicker = FilePicker()
+
     private val image = SimpleObjectProperty(Image("/placeholder.png"))
     private val preview = imageview() {
         viewport = Rectangle2D(0.0, 0.0, 160.0, 100.0)
@@ -29,7 +33,7 @@ class PixView: View() {
             }
             button("Open Image...") {
                 action {
-                    val result = FilePicker.chooseFile("Select image file",
+                    val result = openFilePicker.chooseFile("Select image file",
                             arrayOf(FileChooser.ExtensionFilter("Supported image format",
                                     listOf("*.png", "*.jpg", "*.jpeg", "*.bmp"))))
                     if (result.isNotEmpty()) {
@@ -40,7 +44,7 @@ class PixView: View() {
             }
             button("Export To...") {
                 action {
-                    val files = FilePicker.chooseFile("Select file to save",
+                    val files = exportFilePicker.chooseFile("Select file to save",
                             arrayOf(FileChooser.ExtensionFilter("Pix Image",
                                     listOf("*.pix"))), FileChooserMode.Save)
                     if (files.isNotEmpty()) {
