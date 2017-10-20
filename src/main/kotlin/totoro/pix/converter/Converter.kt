@@ -13,8 +13,12 @@ object Converter {
         // encode width / height
         val width = Math.min(image.width.toInt(), 160)
         val height = Math.min(image.height.toInt(), 100)
-        matrix.add(width.toByte())
-        matrix.add((height / 2).toByte())
+        
+        matrix.add((width shr 8 and 0xFF).toByte())
+        matrix.add((width shr 0 and 0xFF).toByte())
+        matrix.add((height / 2 shr 8 and 0xFF).toByte())
+        matrix.add((height / 2 shr 0 and 0xFF).toByte())
+        
         println("Width: $width")
         println("Height: $height\n")
 
